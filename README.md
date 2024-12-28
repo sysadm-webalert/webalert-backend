@@ -1,4 +1,4 @@
-# WebAlert Agent
+# WebAlert Backend
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sysadm-webalert_webalert-backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sysadm-webalert_webalert-backend)
 ## Overview
 WebAlert is a smoothie app to monitoring your sites, with real-time alerts and detailed metrics, you'll always stay informed about the status of your sites. 
@@ -38,11 +38,11 @@ WebAlert is a smoothie app to monitoring your sites, with real-time alerts and d
    ```
 
 ## Configuration
-1. Create your .env file (only for local)
+1. Create your .env file. (only for local)
    ```bash
    wget https://github.com/symfony/demo/blob/main/.env
    ```
-2. Set the following env variables as env variables.
+2. Set the following env variables as env variables. (only for local, for docker use environments variables)
    ```sh
    DATABASE_URL: "mysql://db_user:db_password@db_host:3306/your_database?serverVersion=8.0.32&charset=utf8mb4"
    FRONTEND_BASE_URL: "http://frontned_uri"
@@ -50,7 +50,7 @@ WebAlert is a smoothie app to monitoring your sites, with real-time alerts and d
    MAILER_DSN: "smtp://smtp_user%40smtp_domain:smtp_password@smtp_host:587"
    EMAILER_FROM_EMAIL: "smtp_user@smtp_domain"
    ```
-3. Create the keypairs for lexik
+3. Create the keypairs for lexik. (only for local)
    ```sh
    php bin/console lexik:jwt:generate-keypair
    ```
