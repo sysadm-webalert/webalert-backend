@@ -18,4 +18,9 @@ class UserChecker implements UserCheckerInterface
             throw new UserNotActivatedException();
         }
     }
+
+    public function checkPostAuth(UserInterface $user): void
+    {
+        //UserChecker contains 1 abstract method and must therefore be declared abstract or implement the remaining methods
+    }
 }

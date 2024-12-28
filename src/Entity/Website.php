@@ -167,10 +167,8 @@ class Website
 
     public function removeStatus(Status $status): static
     {
-        if ($this->statuses->removeElement($status)) {
-            if ($status->getWebsiteId() === $this) {
-                $status->setWebsiteId(null);
-            }
+        if ($this->statuses->removeElement($status) && $status->getWebsiteId() === $this) {
+            $status->setWebsiteId(null);
         }
 
         return $this;
@@ -196,10 +194,8 @@ class Website
 
     public function removeAlert(Alerts $alert): static
     {
-        if ($this->alerts->removeElement($alert)) {
-            if ($alert->getWebsite() === $this) {
-                $alert->setWebsite(null);
-            }
+        if ($this->alerts->removeElement($alert) && $alert->getWebsite() === $this) {
+            $alert->setWebsite(null);
         }
 
         return $this;
@@ -225,11 +221,8 @@ class Website
 
     public function removeMetric(Metrics $metric): static
     {
-        if ($this->metrics->removeElement($metric)) {
-            // set the owning side to null (unless already changed)
-            if ($metric->getWebsite() === $this) {
-                $metric->setWebsite(null);
-            }
+        if ($this->metrics->removeElement($metric) && $metric->getWebsite() === $this) {
+            $metric->setWebsite(null);
         }
 
         return $this;

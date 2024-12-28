@@ -133,10 +133,8 @@ class Status
 
     public function removeAlert(Alerts $alert): static
     {
-        if ($this->alerts->removeElement($alert)) {
-            if ($alert->getStatus() === $this) {
-                $alert->setStatus(null);
-            }
+        if ($this->alerts->removeElement($alert) && $alert->getStatus() === $this) {
+            $alert->setStatus(null);
         }
 
         return $this;

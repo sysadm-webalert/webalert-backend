@@ -43,19 +43,16 @@ class ThresholdValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        if ($constraint->type === 'max_response') {
-            if (!is_numeric($value) || (float) $value <= 0) {
-                $this->context->buildViolation($constraint->invalidResponseTime)
-                    ->setParameter('{{ value }}', $value)
-                    ->addViolation();
-            }
+        if ($constraint->type === 'max_response' && (!is_numeric($value) || (float) $value <= 0)) {
+            $this->context->buildViolation($constraint->invalidResponseTime)
+                ->setParameter('{{ value }}', $value)
+                ->addViolation();
         }
-        if ($constraint->type === 'percent') {
-            if (!is_numeric($value) || $value < 1 || $value > 99) {
-                $this->context->buildViolation($constraint->invalidPercent)
-                    ->setParameter('{{ value }}', $value)
-                    ->addViolation();
-            }
-        }
+        
+        if ($constraint->type === 'percent' && (!is_numeric($value) || $value < 1 || $value > 99)) {
+            $this->context->buildViolation($constraint->invalidPercent)
+                ->setParameter('{{ value }}', $value)
+                ->addViolation();
+        }        
     }
 }

@@ -103,10 +103,8 @@ class Client
 
     public function removeWebsite(Website $website): static
     {
-        if ($this->websites->removeElement($website)) {
-            if ($website->getClientId() === $this) {
-                $website->setClientId(null);
-            }
+        if ($this->websites->removeElement($website) && $website->getClientId() === $this) {
+            $website->setClientId(null);
         }
 
         return $this;
@@ -132,10 +130,8 @@ class Client
 
     public function removeUser(User $user): static
     {
-        if ($this->users->removeElement($user)) {
-            if ($user->getClientId() === $this) {
-                $user->setClientId(null);
-            }
+        if ($this->users->removeElement($user) && $user->getClientId() === $this) {
+            $user->setClientId(null);
         }
 
         return $this;
@@ -161,11 +157,8 @@ class Client
 
     public function removeThreshold(Threshold $threshold): static
     {
-        if ($this->thresholds->removeElement($threshold)) {
-            // set the owning side to null (unless already changed)
-            if ($threshold->getClient() === $this) {
-                $threshold->setClient(null);
-            }
+        if ($this->thresholds->removeElement($threshold) && $threshold->getClient() === $this) {
+            $threshold->setClient(null);
         }
 
         return $this;
@@ -191,13 +184,11 @@ class Client
 
     public function removeEvent(Events $event): static
     {
-        if ($this->events->removeElement($event)) {
-            // set the owning side to null (unless already changed)
-            if ($event->getClient() === $this) {
-                $event->setClient(null);
-            }
+        if ($this->events->removeElement($event) && $event->getClient() === $this) {
+            $event->setClient(null);
         }
 
         return $this;
     }
+
 }

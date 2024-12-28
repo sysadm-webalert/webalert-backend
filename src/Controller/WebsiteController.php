@@ -212,6 +212,7 @@ class WebsiteController extends AbstractController
             $fileName = sprintf('%s-%s.jpg', $sanitizedUrl, $client->getName());
             $snapshotUrl = $urlGenerator->generate('app_snapshot_public', ['filename' => $fileName,], UrlGeneratorInterface::ABSOLUTE_URL);
 
+            $lastCheckedAt = $agent && $agent->getLastCheckedAt() ? $this->timezoneConverter->convertToUserTimezone($agent->getLastCheckedAt(), $userTimezone)->format('Y-m-d H:i:s') : null;
             return [
                 'id' => $website->getId(),
                 'url' => $website->getUrl(),
@@ -226,7 +227,7 @@ class WebsiteController extends AbstractController
                 'agent' => $agent ? [
                     'isInstalled' => $agent->isInstalled(),
                     'version' => $agent->getVersion(),
-                    'lastCheckedAt' => $agent->getLastCheckedAt() ? $this->timezoneConverter->convertToUserTimezone($agent->getLastCheckedAt(), $userTimezone)->format('Y-m-d H:i:s') : null,
+                    'lastCheckedAt' => $lastCheckedAt,
                 ] : null, // If no agent, give null
                 'lastMetric' => $lastMetric ? [
                     'id' => $lastMetric->getId(),
