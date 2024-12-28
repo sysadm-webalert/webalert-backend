@@ -21,7 +21,7 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        docker build --build-arg ACCESS_CONTROL_ALLOW_ORIGIN=https://app.webalert.digital -f docker/Dockerfile -t build/webalert-backend:${{  github.ref_name }} .
+        docker build --build-arg ACCESS_CONTROL_ALLOW_ORIGIN=https://app.webalert.digital -f docker/nginx/Dockerfile -t build/webalert-backend:${{  github.ref_name }} .
 
     - name: Tag the images
       run: |
