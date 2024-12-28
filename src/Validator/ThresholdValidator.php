@@ -27,6 +27,8 @@ class ThresholdValidator extends ConstraintValidator
             case 'percent':
                 $this->validatePercent($value, $constraint);
                 break;
+            default:
+                throw new \LogicException('Unsupported constraint type: ' . $constraint->type);
         }
     }
 
