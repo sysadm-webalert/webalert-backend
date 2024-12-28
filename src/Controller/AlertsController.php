@@ -95,7 +95,7 @@ class AlertsController extends AbstractController
         return new JsonResponse($alertData, JsonResponse::HTTP_OK);
     }
 
-    private function alertsAgroupation(array $alerts): array 
+    private function alertsAgroupation(array $alerts): array
     {
         $groupedAlerts = [];
 
@@ -125,7 +125,7 @@ class AlertsController extends AbstractController
         return $groupedAlerts;
     }
 
-    private function alertsFormat(array $groupedAlerts, ?string $userTimezone): array 
+    private function alertsFormat(array $groupedAlerts, ?string $userTimezone): array
     {
         $alertData = [];
 
@@ -141,7 +141,7 @@ class AlertsController extends AbstractController
         return $alertData;
     }
 
-    private function alertFormat($firstAlert, $lastAlert, ?string $userTimezone): array 
+    private function alertFormat($firstAlert, $lastAlert, ?string $userTimezone): array
     {
         $convertedCreatedAt = $this->timezoneConverter->convertToUserTimezone(
             $firstAlert->getCreatedAt(),

@@ -561,7 +561,7 @@ class WebsiteController extends AbstractController
         if ($website->getClientId() !== $user->getClientId()) {
             return new JsonResponse(['error' => 'Unauthorized access'], Response::HTTP_FORBIDDEN);
         }
-        $snapshotDeleted = $this->snapshotService->deleteSnapshot($website->getUrl(), $user->getClientId()->getName());
+        $this->snapshotService->deleteSnapshot($website->getUrl(), $user->getClientId()->getName());
 
         $eventMessage = self::SITE . " " . $website->getName() . " has been deleted by ". $user->getEmail();
         $this->eventsService->createEvent($user, $eventMessage, EventsType::SITE_DELETED);

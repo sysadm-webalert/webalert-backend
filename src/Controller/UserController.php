@@ -174,7 +174,7 @@ class UserController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/confirm-email/{token}', name: 'user_confirm_email', methods: ['GET'])]
     public function confirmEmail(string $token, EntityManagerInterface $entityManager): JsonResponse
     {
