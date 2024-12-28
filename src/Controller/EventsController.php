@@ -67,7 +67,7 @@ class EventsController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/events', name: 'api_events', methods: ['GET'])]
     public function getEvents(Request $request): JsonResponse {
         $user = $this->getUser();
@@ -80,7 +80,7 @@ class EventsController extends AbstractController
             $createdAt = $this->timezoneConverter->convertToUserTimezone(
                 $event->getCreatedAt(),
                 $userTimezone
-            );            
+            );
             return [
                 'id' => $event->getId(),
                 'message' => $event->getMessage(),

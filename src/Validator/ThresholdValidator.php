@@ -14,7 +14,7 @@ class ThresholdValidator extends ConstraintValidator
         }
 
         if (null === $value || '' === $value) {
-            return; 
+            return;
         }
 
         if ($constraint->type === 'status_code') {

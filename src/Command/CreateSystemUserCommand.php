@@ -40,7 +40,7 @@ class CreateSystemUserCommand extends Command
         if ($existingUser) {
             $io->success('The system user already exists.');
             return Command::SUCCESS;
-        }  
+        }
         $password = $this->generateRandomPassword();
 
         $client = new Client();

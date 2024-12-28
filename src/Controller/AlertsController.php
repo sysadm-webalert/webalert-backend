@@ -74,7 +74,7 @@ class AlertsController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/alerts/getbyclient', name: 'api_alerts_getbyclient', methods: ['GET'])]
     public function AllgetByClient(AlertsRepository $alertsRepository): JsonResponse {
         $user = $this->getUser();

@@ -14,7 +14,7 @@ class WebsiteValidator extends ConstraintValidator
         }
 
         if (null === $value || '' === $value) {
-            return; 
+            return;
         }
 
         if ($constraint->type === 'sitename') {
@@ -33,7 +33,6 @@ class WebsiteValidator extends ConstraintValidator
                 $this->context->buildViolation($constraint->invalidUrlMessage)
                     ->setParameter('{{ value }}', $value)
                     ->addViolation();
-                return;
             }
         }
     }

@@ -92,7 +92,7 @@ class OrganizationController extends AbstractController
             ];
         }, $users);
 
-        return new JsonResponse($membersData, Response::HTTP_OK);    
+        return new JsonResponse($membersData, Response::HTTP_OK);
     }
 
     #[OA\Post(

@@ -83,8 +83,8 @@ class MailerService
             return;
         }
 
-        $template = $entity instanceof Status 
-        ? 'emails/status_alert.html.twig' 
+        $template = $entity instanceof Status
+        ? 'emails/status_alert.html.twig'
         : 'emails/metrics_alert.html.twig';
 
         $email = (new TemplatedEmail())
@@ -114,8 +114,8 @@ class MailerService
             return;
         }
 
-        $template = $entity instanceof Status 
-        ? 'emails/status_restored.html.twig' 
+        $template = $entity instanceof Status
+        ? 'emails/status_restored.html.twig'
         : 'emails/metrics_restored.html.twig';
 
         $email = (new TemplatedEmail())

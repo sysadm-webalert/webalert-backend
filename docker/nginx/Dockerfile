@@ -1,7 +1,15 @@
 # Stage 1: Build
-FROM composer:2.8.2 as builder
+FROM composer:2.8.2 AS builder
 WORKDIR /var/www/html
-COPY ./ /var/www/html
+COPY ./bin /var/www/html/bin
+COPY ./config /var/www/html/config
+COPY ./docker /var/www/html/docker
+COPY ./migrations /var/www/html/migrations
+COPY ./snapshots /var/www/html/snapshots
+COPY ./public /var/www/html/public
+COPY ./src /var/www/html/src
+COPY ./templates /var/www/html/templates
+COPY ./composer.json /var/www/html/composer.json
 
 RUN rm -rf vendor
 RUN apk add envsubst dos2unix
@@ -22,18 +30,18 @@ COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY ./docker/nginx/start.sh /tmp/
 
-RUN chmod +x /tmp/start.sh
-RUN apk add nginx
-RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+RUN apk add --no-cache nginx && \
+    docker-php-ext-install mysqli pdo pdo_mysql && \
+    docker-php-ext-enable pdo_mysql && \
+    chmod +x /tmp/start.sh
 
 WORKDIR /var/www/html
 
 COPY --from=builder /var/www/html /var/www/html
 COPY --from=builder /var/www/html/.env /var/www/html/.env
 
-RUN mkdir -p /run/nginx /var/lib/nginx/tmp/client_body /var/log/nginx
-RUN chown -R www-data:www-data /run/nginx
-RUN chown -R www-data:www-data /var/www/html /var/lib/nginx /var/log/nginx
+RUN mkdir -p /run/nginx /var/lib/nginx/tmp/client_body /var/log/nginx && \
+    chown -R www-data:www-data /run/nginx /var/www/html /var/lib/nginx /var/log/nginx
 
 USER www-data
 

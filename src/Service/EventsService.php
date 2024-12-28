@@ -20,7 +20,7 @@ class EventsService
         $this->logger = $logger;
     }
 
-    public function createEvent(User $user, string $message, EventsType $kind ): void 
+    public function createEvent(User $user, string $message, EventsType $kind ): void
     {
         $event = new Events();
         $event->setClient($user->getClientId());

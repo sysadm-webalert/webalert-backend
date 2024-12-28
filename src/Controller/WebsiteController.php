@@ -143,7 +143,7 @@ class WebsiteController extends AbstractController
                             new OA\Property(property: 'checkedAt', type: 'string', format: 'date-time', example: '2024-12-27 21:45:32'),
                         ]
                     ),
-                    new OA\Property(property: 'snapshotUrl', type: 'string', example: 'http://api.webalert.digital/uploads/snapshots/Mycompany-Mysite.jpg'),
+                    new OA\Property(property: 'snapshotUrl', type: 'string', example: 'https://api.webalert.digital/uploads/snapshots/Mycompany-Mysite.jpg'),
                 ]
             )
         )
@@ -425,7 +425,7 @@ class WebsiteController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/website/update/{id}', name: 'api_website_update', methods: ['PUT'])]
     public function updateWebsite($id, Request $request, ValidatorInterface $validator): JsonResponse {
         $data = json_decode($request->getContent(), true);
@@ -637,8 +637,8 @@ class WebsiteController extends AbstractController
         try {
             $imagePath = $this->snapshotService->captureSnapshot($url, $user->getClientId()->getName());
             if (!$imagePath) {
-                return new JsonResponse(['error' => 'Failed to capture snapshot.',], Response::HTTP_INTERNAL_SERVER_ERROR);}
-                
+                return new JsonResponse(['error' => 'Failed to capture snapshot.',], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }    
             return new JsonResponse(['message' => 'Snapshot created successfully','imagePath' => $imagePath], Response::HTTP_OK);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Exception: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);

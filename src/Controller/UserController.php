@@ -263,7 +263,7 @@ class UserController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/profile/get', name: 'api_profile_get', methods: ['GET'])]
     public function getProfile(): JsonResponse
     {
@@ -336,7 +336,7 @@ class UserController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/profile/set', name: 'api_profile_add', methods: ['POST'])]
     public function setProfile(Request $request): JsonResponse
     {
@@ -416,7 +416,7 @@ class UserController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/request-password', name: 'api_request_password', methods: ['POST'])]
     public function requestPassword(Request $request): JsonResponse
     {
@@ -492,7 +492,7 @@ class UserController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/restart-password', name: 'api_restart_password', methods: ['POST'])]
     public function restartPassword(Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {

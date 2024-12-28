@@ -29,7 +29,7 @@ class StatusController extends AbstractController
     private $dateRangeFilterService;
     private $logger;
     
-    public function __construct(EntityManagerInterface $entityManager, WebsiteRepository $websiteRepository, AlertService $alertService, TimezoneConverter $timezoneConverter, DateRangeFilterService $dateRangeFilterService, ThresholdService $thresholdService, LoggerInterface $logger) 
+    public function __construct(EntityManagerInterface $entityManager, WebsiteRepository $websiteRepository, AlertService $alertService, TimezoneConverter $timezoneConverter, DateRangeFilterService $dateRangeFilterService, ThresholdService $thresholdService, LoggerInterface $logger)
     {
         $this->websiteRepository = $websiteRepository;
         $this->entityManager = $entityManager;
@@ -366,7 +366,7 @@ class StatusController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/status/getbymultiplehosts', name: 'api_status_getbymultiplehosts', methods: ['POST'])]
     public function getStatusesByMultipleHosts(Request $request, UserInterface $user): JsonResponse
     {

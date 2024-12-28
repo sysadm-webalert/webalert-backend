@@ -209,7 +209,7 @@ class MetricsController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]   
+    )]
     #[Route('/api/v1/metrics/getbyhost/{websiteId}', name: 'api_metrics_getbyhost', methods: ['GET'])]
     public function getMetricsByClient(int $websiteId, UserInterface $user, Request $request): JsonResponse
     {
@@ -331,7 +331,7 @@ class MetricsController extends AbstractController
                 new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
             ]
         )
-    )]    
+    )]
     #[Route('/api/v1/metrics/getbymultiplehosts', name: 'api_metrics_getbymultiplehosts', methods: ['POST'])]
     public function getMetricsByMultipleHosts(Request $request, UserInterface $user): JsonResponse
     {
