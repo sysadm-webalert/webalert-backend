@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Enum\EventsType;
 use App\Service\EventsService;
 use OpenApi\Attributes as OA;
+use App\Enum\ErrorType;
 
 class WebsiteController extends AbstractController
 {
@@ -46,7 +47,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: 'OK.',
+        description: ErrorType::OK->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -60,31 +61,31 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 401,
-        description: 'Unauthorized.',
+        description: ErrorType::UNAUTHORIZED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'JWT Token not found.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::UNAUTHORIZED->value)
             ]
         )
     )]
     #[OA\Response(
         response: 403,
-        description: 'Access denied.',
+        description: ErrorType::FORBIDDEN->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Access Denied.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::FORBIDDEN->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -109,7 +110,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: 'OK.',
+        description: ErrorType::OK->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -150,31 +151,31 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 401,
-        description: 'Unauthorized.',
+        description: ErrorType::UNAUTHORIZED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'JWT Token not found.'),
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::UNAUTHORIZED->value),
             ]
         )
     )]
     #[OA\Response(
         response: 404,
-        description: 'Not found.',
+        description: ErrorType::NOT_FOUND->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Client not found or user not authenticated.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::NOT_FOUND->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -267,7 +268,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 400,
-        description: 'Bad Request.',
+        description: ErrorType::BAD_REQUEST->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -281,21 +282,21 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 403,
-        description: 'Access denied.',
+        description: ErrorType::FORBIDDEN->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Unauthorized access')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::FORBIDDEN->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -374,7 +375,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: 'OK.',
+        description: ErrorType::OK->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -384,7 +385,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 400,
-        description: 'Bad Request.',
+        description: ErrorType::BAD_REQUEST->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -398,31 +399,31 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 403,
-        description: 'Access denied.',
+        description: ErrorType::FORBIDDEN->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Unauthorized access')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::FORBIDDEN->value)
             ]
         )
     )]
     #[OA\Response(
         response: 404,
-        description: 'Not found.',
+        description: ErrorType::NOT_FOUND->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Website not found')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::NOT_FOUND->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -506,7 +507,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: 'OK.',
+        description: ErrorType::OK->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -516,31 +517,31 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 403,
-        description: 'Access denied.',
+        description: ErrorType::FORBIDDEN->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Unauthorized access')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::FORBIDDEN->value)
             ]
         )
     )]
     #[OA\Response(
         response: 404,
-        description: 'Not found.',
+        description: ErrorType::NOT_FOUND->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Website not found')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::NOT_FOUND->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -584,7 +585,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: 'OK.',
+        description: ErrorType::OK->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -595,7 +596,7 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 400,
-        description: 'Bad Request.',
+        description: ErrorType::BAD_REQUEST->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -605,11 +606,11 @@ class WebsiteController extends AbstractController
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -638,7 +639,7 @@ class WebsiteController extends AbstractController
             $imagePath = $this->snapshotService->captureSnapshot($url, $user->getClientId()->getName());
             if (!$imagePath) {
                 return new JsonResponse(['error' => 'Failed to capture snapshot.',], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }    
+            }
             return new JsonResponse(['message' => 'Snapshot created successfully','imagePath' => $imagePath], Response::HTTP_OK);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Exception: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);

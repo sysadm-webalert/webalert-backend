@@ -18,6 +18,7 @@ use App\Service\TimezoneConverter;
 use App\Service\DateRangeFilterService;
 use App\Enum\StatusType;
 use OpenApi\Attributes as OA;
+use App\Enum\ErrorType;
 
 class StatusController extends AbstractController
 {
@@ -75,7 +76,7 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 400,
-        description: 'Bad Request.',
+        description: ErrorType::BAD_REQUEST->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -86,41 +87,41 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 401,
-        description: 'Unauthorized.',
+        description: ErrorType::UNAUTHORIZED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'JWT Token not found.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::UNAUTHORIZED->value)
             ]
         )
     )]
     #[OA\Response(
         response: 403,
-        description: 'Access denied.',
+        description: ErrorType::FORBIDDEN->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Access Denied.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::FORBIDDEN->value)
             ]
         )
     )]
     #[OA\Response(
         response: 404,
-        description: 'Not found.',
+        description: ErrorType::NOT_FOUND->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'Website not found for ID: 5')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::NOT_FOUND->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -200,7 +201,7 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: 'OK.',
+        description: ErrorType::OK->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -220,21 +221,21 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 401,
-        description: 'Unauthorized.',
+        description: ErrorType::UNAUTHORIZED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'JWT Token not found.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::UNAUTHORIZED->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
@@ -319,7 +320,7 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: 'OK.',
+        description: ErrorType::OK->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -339,7 +340,7 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 400,
-        description: 'Bad Request.',
+        description: ErrorType::BAD_REQUEST->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -349,21 +350,21 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 401,
-        description: 'Unauthorized.',
+        description: ErrorType::UNAUTHORIZED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'JWT Token not found.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::UNAUTHORIZED->value)
             ]
         )
     )]
     #[OA\Response(
         response: 405,
-        description: 'Method not allowed.',
+        description: ErrorType::METHOD_NOT_ALLOWED->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error', type: 'string', example: 'An Error Occurred: Method Not Allowed.')
+                new OA\Property(property: 'error', type: 'string', example: ErrorType::METHOD_NOT_ALLOWED->value)
             ]
         )
     )]
