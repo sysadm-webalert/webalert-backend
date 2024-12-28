@@ -35,7 +35,7 @@ class EventsController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -97,6 +97,6 @@ class EventsController extends AbstractController
             }
             $this->entityManager->flush();
         }
-        return new JsonResponse($eventsData, Response::HTTP_OK);    
+        return new JsonResponse($eventsData, Response::HTTP_OK);
     }
 }

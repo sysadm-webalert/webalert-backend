@@ -159,30 +159,12 @@ class StatusController extends AbstractController
             $threshold = $website->getThreshold();
             if ($threshold) {
                 $violations = $this->thresholdService->checkThreshold($status, $threshold);
-
-            // Log verification content violation $violations
+    
                 $this->logger->info('Violations:', ['violations' => $violations]);
-
-                // Each alert defined as enum
-                foreach (StatusType::cases() as $statusType) {
-                    $violationFound = false;
-
-                    foreach ($violations as $violation) {
-                        if ($violation['kind'] === $statusType->value) {
-                            $this->logger->info("Creating alert for kind: {$statusType->value}");
-                            $this->alertService->createAlert($status, $statusType->value);
-                            $violationFound = true;
-                            break;
-                        }
-                    }
-
-                    if (!$violationFound) {
-                        $this->alertService->resolveAlert($status, $statusType->value);
-                    }
-                }
+    
+                $this->statusViolations($violations, $status);
             }
         }
-
         $this->entityManager->flush();
 
         return new JsonResponse(['message' => 'Statuses registered successfully.'], Response::HTTP_CREATED);
@@ -201,7 +183,7 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -320,7 +302,7 @@ class StatusController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -428,4 +410,27 @@ class StatusController extends AbstractController
 
         return new JsonResponse($statuses, Response::HTTP_OK);
     }
+
+    private function statusViolations(array $violations, Status $status): void
+    {
+        foreach (StatusType::cases() as $statusType) {
+            $violationFound = $this->handleViolationStatus($violations, $statusType, $status);
+
+            if (!$violationFound) {
+                $this->alertService->resolveAlert($status, $statusType->value);
+            }
+        }
+    }
+
+    private function handleViolationStatus(array $violations, StatusType $statusType, Status $status): bool
+    {
+        foreach ($violations as $violation) {
+            if ($violation['kind'] === $statusType->value) {
+                $this->alertService->createAlert($status, $statusType->value);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

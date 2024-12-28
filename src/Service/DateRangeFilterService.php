@@ -26,7 +26,7 @@ class DateRangeFilterService
         $now = new \DateTimeImmutable('now');
 
         switch ($filter) {
-            case '1m': 
+            case '1m':
                 $start = $now->modify('-1 month');
                 break;
 

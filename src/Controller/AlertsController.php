@@ -25,7 +25,7 @@ class AlertsController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -88,7 +88,17 @@ class AlertsController extends AbstractController
         if (empty($alerts)) {
             return new JsonResponse([], JsonResponse::HTTP_OK);
         }
+
+        $groupedAlerts = $this->alertsAgroupation($alerts);
+        $alertData = $this->alertsFormat($groupedAlerts, $userTimezone);
+
+        return new JsonResponse($alertData, JsonResponse::HTTP_OK);
+    }
+
+    private function alertsAgroupation(array $alerts): array 
+    {
         $groupedAlerts = [];
+
         foreach ($alerts as $alert) {
             $websiteId = $alert->getWebsite()->getId();
             $kind = $alert->getKind();
@@ -111,34 +121,50 @@ class AlertsController extends AbstractController
                 $currentIntervals[key($currentIntervals)] = $lastInterval;
             }
         }
+
+        return $groupedAlerts;
+    }
+
+    private function alertsFormat(array $groupedAlerts, ?string $userTimezone): array 
+    {
         $alertData = [];
-        foreach ($groupedAlerts as $groupKey => $intervals) {
+
+        foreach ($groupedAlerts as $intervals) {
             foreach ($intervals as $interval) {
                 $firstAlert = $interval['first'];
                 $lastAlert = $interval['last'];
-                $convertedCreatedAt = $this->timezoneConverter->convertToUserTimezone(
-                    $firstAlert->getCreatedAt(),
-                    $userTimezone
-                );
-                $convertedResolvedAt = $lastAlert->getResolvedAt()
-                    ? $this->timezoneConverter->convertToUserTimezone($lastAlert->getResolvedAt(), $userTimezone)
-                    : null;
-                $alertData[] = [
-                    'id' => $lastAlert->getId(),
-                    'website' => $lastAlert->getWebsite()->getUrl(),
-                    'status' => $lastAlert->getStatus() ? $lastAlert->getStatus()->getStatusCode() : null,
-                    'responseTime' => $lastAlert->getStatus() ? $lastAlert->getStatus()->getResponseTime() : null,
-                    'isUp' => $lastAlert->getStatus() ? $lastAlert->getStatus()->isUp() : null,
-                    'cpuUsage' => $lastAlert->getMetrics() ? $lastAlert->getMetrics()->getCpuUsage() : null,
-                    'memoryUsage' => $lastAlert->getMetrics() ? $lastAlert->getMetrics()->getMemoryUsage() : null,
-                    'diskUsage' => $lastAlert->getMetrics() ? $lastAlert->getMetrics()->getDiskUsage() : null,
-                    'type' => $lastAlert->getKind(),
-                    'isResolved' => $lastAlert->isResolved(),
-                    'createdAt' => $convertedCreatedAt->format('Y-m-d H:i:s'),
-                    'resolvedAt' => $convertedResolvedAt ? $convertedResolvedAt->format('Y-m-d H:i:s') : null,
-                ];
+
+                $alertData[] = $this->alertFormat($firstAlert, $lastAlert, $userTimezone);
             }
         }
-        return new JsonResponse($alertData, JsonResponse::HTTP_OK);
+
+        return $alertData;
+    }
+
+    private function alertFormat($firstAlert, $lastAlert, ?string $userTimezone): array 
+    {
+        $convertedCreatedAt = $this->timezoneConverter->convertToUserTimezone(
+            $firstAlert->getCreatedAt(),
+            $userTimezone
+        );
+
+        $convertedResolvedAt = $lastAlert->getResolvedAt()
+            ? $this->timezoneConverter->convertToUserTimezone($lastAlert->getResolvedAt(), $userTimezone)
+            : null;
+
+        return [
+            'id' => $lastAlert->getId(),
+            'website' => $lastAlert->getWebsite()->getUrl(),
+            'status' => $lastAlert->getStatus() ? $lastAlert->getStatus()->getStatusCode() : null,
+            'responseTime' => $lastAlert->getStatus() ? $lastAlert->getStatus()->getResponseTime() : null,
+            'isUp' => $lastAlert->getStatus() ? $lastAlert->getStatus()->isUp() : null,
+            'cpuUsage' => $lastAlert->getMetrics() ? $lastAlert->getMetrics()->getCpuUsage() : null,
+            'memoryUsage' => $lastAlert->getMetrics() ? $lastAlert->getMetrics()->getMemoryUsage() : null,
+            'diskUsage' => $lastAlert->getMetrics() ? $lastAlert->getMetrics()->getDiskUsage() : null,
+            'type' => $lastAlert->getKind(),
+            'isResolved' => $lastAlert->isResolved(),
+            'createdAt' => $convertedCreatedAt->format('Y-m-d H:i:s'),
+            'resolvedAt' => $convertedResolvedAt ? $convertedResolvedAt->format('Y-m-d H:i:s') : null,
+        ];
     }
 }

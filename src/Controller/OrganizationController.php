@@ -39,7 +39,7 @@ class OrganizationController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -120,7 +120,7 @@ class OrganizationController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -249,7 +249,7 @@ class OrganizationController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [

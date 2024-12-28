@@ -62,7 +62,7 @@ class MetricsController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -159,26 +159,8 @@ class MetricsController extends AbstractController
         $threshold = $website->getThreshold();
         if ($threshold) {
             $violations = $this->thresholdService->checkThresholdForMetrics($metrics, $threshold);
-
-            foreach (MetricType::cases() as $metricType) {
-                $violationFound = false;
-
-                foreach ($violations as $violation) {
-                    if ($violation['kind'] === $metricType->value) {
-                        $this->alertService->createAlert($metrics, $metricType->value);
-                        $violationFound = true;
-                        break;
-                    }
-                }
-
-                if (!$violationFound) {
-                    $this->alertService->resolveAlert($metrics, $metricType->value);
-                }
-            }
+            $this->metricViolations($violations, $metrics);
         }
-
-   
-
         return new JsonResponse(['message' => 'Metrics added successful.'], Response::HTTP_CREATED);
     }
 
@@ -188,7 +170,7 @@ class MetricsController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
@@ -288,7 +270,7 @@ class MetricsController extends AbstractController
     )]
     #[OA\Response(
         response: 200,
-        description: ErrorType::OK->value,
+        description: ErrorType::SUCCESS->value,
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(
@@ -392,4 +374,27 @@ class MetricsController extends AbstractController
 
         return new JsonResponse($metricses, Response::HTTP_OK);
     }
+
+    private function metricViolations(array $violations, Metrics $metrics): void
+    {
+        foreach (MetricType::cases() as $metricType) {
+            $violationFound = $this->handlerViolationMetric($violations, $metricType, $metrics);
+
+            if (!$violationFound) {
+                $this->alertService->resolveAlert($metrics, $metricType->value);
+            }
+        }
+    }
+
+    private function handlerViolationMetric(array $violations, MetricType $metricType, Metrics $metrics): bool
+    {
+        foreach ($violations as $violation) {
+            if ($violation['kind'] === $metricType->value) {
+                $this->alertService->createAlert($metrics, $metricType->value);
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
