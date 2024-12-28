@@ -18,9 +18,4 @@ class UserChecker implements UserCheckerInterface
             throw new UserNotActivatedException();
         }
     }
-
-    public function checkPostAuth(UserInterface $user): void
-    {
-    
-    }
 }

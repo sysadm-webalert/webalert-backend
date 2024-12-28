@@ -30,6 +30,9 @@ class WebsiteController extends AbstractController
     private $snapshotService;
     private $validateEntitytService;
     private $eventsService;
+    private const EXAMPLE_SITE = 'https://example.com';
+    private const REQUIRED_VALUES = 'Must provide all valid values';
+    private const SITE = 'The site';
 
     public function __construct(EntityManagerInterface $entityManager, WebsiteRepository $websiteRepository, TimezoneConverter $timezoneConverter, SnapshotService $snapshotService, ValidateEntityService $validateEntitytService, EventsService $eventsService)
     {
@@ -54,7 +57,7 @@ class WebsiteController extends AbstractController
                 type: 'object',
                 properties: [
                     new OA\Property(property: 'id', type: 'integer', example: 1),
-                    new OA\Property(property: 'url', type: 'string', example: 'https://example.com')
+                    new OA\Property(property: 'url', type: 'string', example: self::EXAMPLE_SITE)
                 ]
             )
         )
@@ -117,7 +120,7 @@ class WebsiteController extends AbstractController
                 type: 'object',
                 properties: [
                     new OA\Property(property: 'id', type: 'integer', example: 1),
-                    new OA\Property(property: 'url', type: 'string', example: 'https://example.com'),
+                    new OA\Property(property: 'url', type: 'string', example: self::EXAMPLE_SITE),
                     new OA\Property(property: 'name', type: 'string', example: 'Mysite'),
                     new OA\Property(property: 'Threshold', type: 'object', nullable: true,
                         properties: [
@@ -249,7 +252,7 @@ class WebsiteController extends AbstractController
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'url', type: 'string', example: 'https://example.com'),
+                new OA\Property(property: 'url', type: 'string', example: self::EXAMPLE_SITE),
                 new OA\Property(property: 'name', type: 'string', example: 'ExampleSite'),
                 new OA\Property(property: 'maxResponse', type: 'integer', example: 5000),
                 new OA\Property(property: 'codes', type: 'string', example: '200')
@@ -272,7 +275,7 @@ class WebsiteController extends AbstractController
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error1', type: 'string', example: 'Must provide all valid values'),
+                new OA\Property(property: 'error1', type: 'string', example: self::REQUIRED_VALUES),
                 new OA\Property(property: 'error2', type: 'string', example: 'The value \"Example Site\" is not a valid site name. It contains invalid characters.'),
                 new OA\Property(property: 'error3', type: 'string', example: 'The value \"example.com\" is not a valid URL. It cannot contain paths.'),
                 new OA\Property(property: 'error4', type: 'string', example: 'The value \"-1\" is not a valid response time.'),
@@ -306,7 +309,7 @@ class WebsiteController extends AbstractController
         $user = $this->getUser();
 
         if ( !$data || !isset($data['url']) || !is_string($data['url']) || !isset($data['name']) || !is_string($data['name']) || !isset($data['maxResponse']) || !is_numeric($data['maxResponse']) || empty($data['codes']) || !is_string($data['codes'])) {
-            return new JsonResponse(['error' => "Must provide all valid values"], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => self::REQUIRED_VALUES], Response::HTTP_BAD_REQUEST);
         }
 
         $website = new Website();
@@ -343,7 +346,7 @@ class WebsiteController extends AbstractController
         $this->entityManager->persist($website);
         $this->entityManager->flush();
 
-        $eventMessage = "The site " . $website->getName() . " has been added by ". $user->getEmail();
+        $eventMessage = self::SITE . " " . $website->getName() . " has been added by ". $user->getEmail();
         $this->eventsService->createEvent($user, $eventMessage, EventsType::SITE_CREATED);
 
         return new JsonResponse(['message' => 'Website added successfully'], Response::HTTP_CREATED);
@@ -366,7 +369,7 @@ class WebsiteController extends AbstractController
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'url', type: 'string', example: 'https://example.com'),
+                new OA\Property(property: 'url', type: 'string', example: self::EXAMPLE_SITE),
                 new OA\Property(property: 'name', type: 'string', example: 'ExampleSite'),
                 new OA\Property(property: 'maxResponse', type: 'integer', example: 5000),
                 new OA\Property(property: 'codes', type: 'string', example: '200')
@@ -389,7 +392,7 @@ class WebsiteController extends AbstractController
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'error1', type: 'string', example: 'Must provide all valid values'),
+                new OA\Property(property: 'error1', type: 'string', example: self::REQUIRED_VALUES),
                 new OA\Property(property: 'error2', type: 'string', example: 'The value \"Example Site\" is not a valid site name. It contains invalid characters.'),
                 new OA\Property(property: 'error3', type: 'string', example: 'The value \"example.com\" is not a valid URL. It cannot contain paths.'),
                 new OA\Property(property: 'error4', type: 'string', example: 'The value \"-1\" is not a valid response time.'),
@@ -488,7 +491,7 @@ class WebsiteController extends AbstractController
         }
         $this->entityManager->flush();
 
-        $eventMessage = "The site " . $website->getName() . " has been updated by ". $user->getEmail();
+        $eventMessage = self::SITE . " " . $website->getName() . " has been updated by ". $user->getEmail();
         $this->eventsService->createEvent($user, $eventMessage, EventsType::SITE_UPDATED);
 
         return new JsonResponse(['message' => 'Website updated successfully'], Response::HTTP_OK);
@@ -560,7 +563,7 @@ class WebsiteController extends AbstractController
         }
         $snapshotDeleted = $this->snapshotService->deleteSnapshot($website->getUrl(), $user->getClientId()->getName());
 
-        $eventMessage = "The site " . $website->getName() . " has been deleted by ". $user->getEmail();
+        $eventMessage = self::SITE . " " . $website->getName() . " has been deleted by ". $user->getEmail();
         $this->eventsService->createEvent($user, $eventMessage, EventsType::SITE_DELETED);
 
         $this->entityManager->remove($website);
@@ -579,7 +582,7 @@ class WebsiteController extends AbstractController
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'url', type: 'string', example: 'https://example.com')
+                new OA\Property(property: 'url', type: 'string', example: self::EXAMPLE_SITE)
             ]
         )
     )]

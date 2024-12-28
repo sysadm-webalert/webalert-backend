@@ -24,6 +24,8 @@ class UserController extends AbstractController
     private $entityManager;
     private MailerService $mailerservice;
     private UrlGeneratorInterface $urlGenerator;
+    private const EXAMPLE_EMAIL = 'example@example.com';
+    private const RESET_EMAIL = 'Reset user password.';
 
     public function __construct(EntityManagerInterface $entityManager, MailerService $mailerservice, UrlGeneratorInterface $urlGenerator)
     {
@@ -42,7 +44,7 @@ class UserController extends AbstractController
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'email', type: 'string', example: 'example@example.com'),
+                new OA\Property(property: 'email', type: 'string', example: self::EXAMPLE_EMAIL),
                 new OA\Property(property: 'password', type: 'string', example: 'securepassword'),
                 new OA\Property(property: 'name', type: 'string', example: 'John Doe'),
                 new OA\Property(property: 'organization', type: 'string', example: 'Mycompany')
@@ -241,7 +243,7 @@ class UserController extends AbstractController
             type: 'object',
             properties: [
                 new OA\Property(property: 'timezone', type: 'string', example: 'Europe/Madrid'),
-                new OA\Property(property: 'notification_email', type: 'string', example: 'example@example.com')
+                new OA\Property(property: 'notification_email', type: 'string', example: self::EXAMPLE_EMAIL)
             ]
         )
     )]
@@ -293,7 +295,7 @@ class UserController extends AbstractController
             type: 'object',
             properties: [
                 new OA\Property(property: 'timezone', type: 'string', example: 'Europe/Madrid'),
-                new OA\Property(property: 'notification_email', type: 'string', example: 'example@example.com')
+                new OA\Property(property: 'notification_email', type: 'string', example: self::EXAMPLE_EMAIL)
             ]
         )
     )]
@@ -369,12 +371,12 @@ class UserController extends AbstractController
         tags: ['User'],
     )]
     #[OA\RequestBody(
-        description: 'Reset user password.',
+        description: self::RESET_EMAIL,
         required: true,
         content: new OA\JsonContent(
             type: 'object',
             properties: [
-                new OA\Property(property: 'email', type: 'string', example: 'example@example.com')
+                new OA\Property(property: 'email', type: 'string', example: self::EXAMPLE_EMAIL)
             ]
         )
     )]
@@ -449,11 +451,11 @@ class UserController extends AbstractController
     }
 
     #[OA\Post(
-        summary: 'Reset user password.',
+        summary: self::RESET_EMAIL,
         tags: ['User'],
     )]
     #[OA\RequestBody(
-        description: 'Reset user password.',
+        description: self::RESET_EMAIL,
         required: true,
         content: new OA\JsonContent(
             type: 'object',

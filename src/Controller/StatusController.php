@@ -29,6 +29,7 @@ class StatusController extends AbstractController
     private $timezoneConverter;
     private $dateRangeFilterService;
     private $logger;
+    private const DATE_TIME = '2024-12-23 15:30:00';
     
     public function __construct(EntityManagerInterface $entityManager, WebsiteRepository $websiteRepository, AlertService $alertService, TimezoneConverter $timezoneConverter, DateRangeFilterService $dateRangeFilterService, ThresholdService $thresholdService, LoggerInterface $logger)
     {
@@ -59,7 +60,7 @@ class StatusController extends AbstractController
                     new OA\Property(property: 'pageLoad', type: 'integer', example: 127),
                     new OA\Property(property: 'pageSize', type: 'integer', example: 1500),
                     new OA\Property(property: 'isUp', type: 'boolean', example: true),
-                    new OA\Property(property: 'checkedAt', type: 'string', format: 'date-time', example: '2024-12-16T21:00:00+00:00'),
+                    new OA\Property(property: 'checkedAt', type: 'string', format: 'date-time', example: self::DATE_TIME),
                 ]
             )
         )
@@ -196,7 +197,7 @@ class StatusController extends AbstractController
                     new OA\Property(property: 'pageLoad', type: 'integer', example: 120),
                     new OA\Property(property: 'pageSize', type: 'integer', example: 1500),
                     new OA\Property(property: 'isUp', type: 'boolean', example: true),
-                    new OA\Property(property: 'checkedAt', type: 'string', format: 'date-time', example: '2024-12-16T21:00:00+00:00')
+                    new OA\Property(property: 'checkedAt', type: 'string', format: 'date-time', example: self::DATE_TIME)
                 ]
             )
         )
@@ -315,7 +316,7 @@ class StatusController extends AbstractController
                     new OA\Property(property: 'pageLoad', type: 'integer', example: 120),
                     new OA\Property(property: 'pageSize', type: 'integer', example: 1500),
                     new OA\Property(property: 'isUp', type: 'boolean', example: true),
-                    new OA\Property(property: 'checkedAt', type: 'string', format: 'date-time', example: '2024-12-16T21:00:00+00:00')
+                    new OA\Property(property: 'checkedAt', type: 'string', format: 'date-time', example: self::DATE_TIME)
                 ]
             )
         )
