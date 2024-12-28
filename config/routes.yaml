@@ -1,0 +1,13 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+login:
+    path: /api/login
+    methods: ['POST']
+
+app_snapshot_public:
+  path: /uploads/snapshots/{filename}
+  defaults: { _controller: null }

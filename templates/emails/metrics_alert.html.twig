@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAlert Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            background: #007BFF;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .email-body {
+            padding: 20px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .email-body h2 {
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+        .email-body p {
+            margin: 0 0 15px;
+        }
+        .email-body .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background: #007BFF;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .email-footer {
+            background: #f4f4f4;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>WebAlert Notification</h1>
+        </div>
+        <div class="email-body">
+            <h2>🚨 Critical Alert!</h2>
+            <p>
+                We detected an issue with one of your monitored websites:
+            </p>
+            <p>
+                <strong>Website:</strong> <a href="{{ website.url }}" style="color: #007BFF;">{{ website.url }}</a><br>
+                <strong>CPU Usage:</strong> {{ metrics.cpuUsage }}%<br>
+                <strong>RAM Usage:</strong> {{ metrics.memoryUsage }}%<br>
+                <strong>Disk Usage:</strong> {{ metrics.diskUsage }}%<br>
+                <strong>Alert type:</strong> {{ kind }}
+                <br>
+                <strong>Time Detected:</strong> {{ metrics.getCheckedAt|date('Y-m-d H:i:s') }} UTC
+            </p>
+            <p>
+                Please review the issue and take action immediately to restore functionality.
+            </p>
+            <a href="https://app.webalert.digital" class="cta-button">View Details</a>
+        </div>
+        <div class="email-footer">
+            <p>
+                This email was sent by WebAlert. If you have any questions, please contact our support team.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

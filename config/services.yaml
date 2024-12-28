@@ -1,0 +1,36 @@
+parameters:
+  frontend_base_url: '%env(FRONTEND_BASE_URL)%'
+  puppeteer_base_url: '%env(PUPPETEER_CONTAINER_NAME)%'
+  mailer_from_email: '%env(EMAILER_FROM_EMAIL)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\EventSubscriber\AuthenticationSuccessSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\Service\SnapshotService:
+        arguments:
+            $targetDirectory: '%kernel.project_dir%/public/uploads/snapshots'
+            $puppeteerBaseUrl: '%puppeteer_base_url%'
+
+    App\Service\MailerService:
+        arguments:
+            $fromEmail: '%mailer_from_email%'
+
+    App\Command\CreateSystemUserCommand:
+        arguments:
+            $fromEmail: '%mailer_from_email%'
+
+    App\Validator\WebsiteValidator:
+    App\Validator\ThresholdValidator:

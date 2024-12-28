@@ -1,0 +1,27 @@
+services:
+  webalert-backend-dev:
+    container_name: webalert-backend-dev
+    image: webalert:backend-dev
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        ACCESS_CONTROL_ALLOW_ORIGIN: "*"
+    ports:
+      - "8000:80"
+    environment:
+      DATABASE_URL: "mysql://db_user:db_password@db_host:3306/your_database?serverVersion=8.0.32&charset=utf8mb4"
+      FRONTEND_BASE_URL: "http://frontned_uri"
+      PUPPETEER_CONTAINER_NAME: "http://puppeteer_dns_host:3000"
+      MAILER_DSN: "smtp://smtp_user%40smtp_domain:smtp_password@smtp_host:587"
+      EMAILER_FROM_EMAIL: "smtp_user@smtp_domain"
+    networks:
+      - webalert-network
+    volumes:
+      - ./snapshots:/var/www/html/public/uploads/snapshots:rw
+    profiles: [ dev ]
+    
+networks:
+  webalert-network:
+    name: webalert-network
+    external: true

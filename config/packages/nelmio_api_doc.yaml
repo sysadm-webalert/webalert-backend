@@ -1,0 +1,54 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: WebAlert
+      description: Public API documentation
+      version: 1.0.0
+    components:
+      securitySchemes:
+        BearerAuth:
+          type: http
+          scheme: bearer
+    security:
+      - BearerAuth: []
+    paths:
+      /api/login:
+        post:
+          tags:
+            - Autentication
+          summary: Login to get token
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: user@example.com
+                    password:
+                      type: string
+                      example: yourpassword
+          responses:
+            '200':
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        example: eyJhbGciOiJIUzI1NiIsInR...
+                      name:
+                        type: string
+                        example: Your name
+                      email:
+                        type: string
+                        example: Your email
+            '401':
+              description: Unauthorized
+  areas:
+    path_patterns:
+      - ^/api(?!/doc$)

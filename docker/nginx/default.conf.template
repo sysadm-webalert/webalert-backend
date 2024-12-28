@@ -1,0 +1,54 @@
+server {
+  listen 80;
+  server_name domain.ltd www.domain.ltd;
+  root /var/www/html/public;
+  fastcgi_hide_header X-Powered-By;
+
+  location ~ ^/index\.php(/|$) {
+    fastcgi_pass 127.0.0.1:9000;
+    fastcgi_split_path_info ^(.+\.php)(/.*)$;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;  
+
+    fastcgi_param DOCUMENT_ROOT $document_root;
+    internal;  
+
+    limit_except GET HEAD POST PUT DELETE { deny all; }
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";  
+
+    add_header Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff" always;
+  }
+
+  location / {
+    if ($request_method = OPTIONS) {
+      add_header 'Access-Control-Allow-Origin' '${ACCESS_CONTROL_ALLOW_ORIGIN}';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+      add_header 'Access-Control-Allow-Headers' 'Authorization, Content-Type, X-Requested-With, Origin, Accept';
+      add_header Content-Length 0;
+      add_header Content-Type text/plain;
+      return 204;
+    }
+
+    try_files $uri $uri/ /index.php?$query_string;
+
+    add_header 'Access-Control-Allow-Origin' '${ACCESS_CONTROL_ALLOW_ORIGIN}';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+    add_header 'Access-Control-Allow-Headers' 'Authorization, Content-Type, X-Requested-With, Origin, Accept';
+  }
+
+  location /uploads/ {
+    expires off;
+    add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate";
+  }
+
+  location ~ \.php$ {
+    return 404;
+  }
+
+  error_log /var/log/nginx/webalert-backend_error.log;
+  access_log /dev/null;
+}
