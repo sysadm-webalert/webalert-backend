@@ -53,6 +53,6 @@ class ThresholdValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->invalidPercent)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();
-        }        
+        }
     }
 }
