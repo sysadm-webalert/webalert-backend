@@ -33,6 +33,7 @@ class WebsiteController extends AbstractController
     private const EXAMPLE_SITE = 'https://example.com';
     private const REQUIRED_VALUES = 'Must provide all valid values';
     private const SITE = 'The site';
+    private const SITE_EXIST = 'Website already exists.';
 
     public function __construct(EntityManagerInterface $entityManager, WebsiteRepository $websiteRepository, TimezoneConverter $timezoneConverter, SnapshotService $snapshotService, ValidateEntityService $validateEntitytService, EventsService $eventsService)
     {
@@ -281,7 +282,7 @@ class WebsiteController extends AbstractController
                 new OA\Property(property: 'error3', type: 'string', example: 'The value \"example.com\" is not a valid URL. It cannot contain paths.'),
                 new OA\Property(property: 'error4', type: 'string', example: 'The value \"-1\" is not a valid response time.'),
                 new OA\Property(property: 'error5', type: 'string', example: 'The value \"50\" is not a valid HTTP code or range.'),
-                new OA\Property(property: 'error6', type: 'string', example: 'Website already exists.')
+                new OA\Property(property: 'error6', type: 'string', example: self::SITE_EXIST)
             ]
         )
     )]
@@ -316,7 +317,7 @@ class WebsiteController extends AbstractController
 
         $existingWebsite = $this->websiteRepository->existingWebsite(null, $data['url'], $user->getClientId());
         if ($existingWebsite) {
-            return new JsonResponse(['error' => 'Website already exists.'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => self::SITE_EXIST], Response::HTTP_BAD_REQUEST);
         }
 
         $website = new Website();
@@ -404,7 +405,7 @@ class WebsiteController extends AbstractController
                 new OA\Property(property: 'error3', type: 'string', example: 'The value \"example.com\" is not a valid URL. It cannot contain paths.'),
                 new OA\Property(property: 'error4', type: 'string', example: 'The value \"-1\" is not a valid response time.'),
                 new OA\Property(property: 'error5', type: 'string', example: 'The value \"50\" is not a valid HTTP code or range.'),
-                new OA\Property(property: 'error6', type: 'string', example: 'Website already exists.')
+                new OA\Property(property: 'error6', type: 'string', example: self::SITE_EXIST)
             ]
         )
     )]
@@ -454,7 +455,7 @@ class WebsiteController extends AbstractController
 
         $existingWebsite = $this->websiteRepository->existingWebsite($data['id'], $data['url'], $user->getClientId());
         if ($existingWebsite) {
-            return new JsonResponse(['error' => 'Website already exists.'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => self::SITE_EXIST], Response::HTTP_BAD_REQUEST);
         }
 
         if (isset($data['url'])) {
