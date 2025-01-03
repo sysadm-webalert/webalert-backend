@@ -15,4 +15,22 @@ class WebsiteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Website::class);
     }
+
+    public function existingWebsite($id, $url, $clientId): ?Website
+    {
+        $normalizedUrl = preg_replace('/^https?:\/\//', '', rtrim($url, '/'));
+
+        $qb = $this->createQueryBuilder('w')
+            ->where('w.client = :client')
+            ->andWhere('w.url LIKE :url')
+            ->setParameter('client', $clientId)
+            ->setParameter('url', "%$normalizedUrl%");
+
+        if ($id) {
+            $qb->andWhere('w.id != :id')
+            ->setParameter('id', $id);
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

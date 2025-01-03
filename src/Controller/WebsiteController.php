@@ -280,7 +280,8 @@ class WebsiteController extends AbstractController
                 new OA\Property(property: 'error2', type: 'string', example: 'The value \"Example Site\" is not a valid site name. It contains invalid characters.'),
                 new OA\Property(property: 'error3', type: 'string', example: 'The value \"example.com\" is not a valid URL. It cannot contain paths.'),
                 new OA\Property(property: 'error4', type: 'string', example: 'The value \"-1\" is not a valid response time.'),
-                new OA\Property(property: 'error5', type: 'string', example: 'The value \"50\" is not a valid HTTP code or range.')
+                new OA\Property(property: 'error5', type: 'string', example: 'The value \"50\" is not a valid HTTP code or range.'),
+                new OA\Property(property: 'error6', type: 'string', example: 'Website already exists.')
             ]
         )
     )]
@@ -311,6 +312,11 @@ class WebsiteController extends AbstractController
 
         if ( !$data || !isset($data['url']) || !is_string($data['url']) || !isset($data['name']) || !is_string($data['name']) || !isset($data['maxResponse']) || !is_numeric($data['maxResponse']) || empty($data['codes']) || !is_string($data['codes'])) {
             return new JsonResponse(['error' => self::REQUIRED_VALUES], Response::HTTP_BAD_REQUEST);
+        }
+
+        $existingWebsite = $this->websiteRepository->existingWebsite(null, $data['url'], $user->getClientId());
+        if ($existingWebsite) {
+            return new JsonResponse(['error' => 'Website already exists.'], Response::HTTP_BAD_REQUEST);
         }
 
         $website = new Website();
@@ -397,7 +403,8 @@ class WebsiteController extends AbstractController
                 new OA\Property(property: 'error2', type: 'string', example: 'The value \"Example Site\" is not a valid site name. It contains invalid characters.'),
                 new OA\Property(property: 'error3', type: 'string', example: 'The value \"example.com\" is not a valid URL. It cannot contain paths.'),
                 new OA\Property(property: 'error4', type: 'string', example: 'The value \"-1\" is not a valid response time.'),
-                new OA\Property(property: 'error5', type: 'string', example: 'The value \"50\" is not a valid HTTP code or range.')
+                new OA\Property(property: 'error5', type: 'string', example: 'The value \"50\" is not a valid HTTP code or range.'),
+                new OA\Property(property: 'error6', type: 'string', example: 'Website already exists.')
             ]
         )
     )]
@@ -443,6 +450,11 @@ class WebsiteController extends AbstractController
 
         if ($website->getClientId() !== $user->getClientId()) {
             return new JsonResponse(['error' => 'Unauthorized access'], Response::HTTP_FORBIDDEN);
+        }
+
+        $existingWebsite = $this->websiteRepository->existingWebsite($data['id'], $data['url'], $user->getClientId());
+        if ($existingWebsite) {
+            return new JsonResponse(['error' => 'Website already exists.'], Response::HTTP_BAD_REQUEST);
         }
 
         if (isset($data['url'])) {
