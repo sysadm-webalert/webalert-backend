@@ -36,6 +36,7 @@ security:
         - { path: ^/api/v1/validate-token, roles: PUBLIC_ACCESS }
         - { path: ^/api/v1/request-password, roles: PUBLIC_ACCESS }
         - { path: ^/api/v1/restart-password, roles: PUBLIC_ACCESS }
+        - { path: ^/api/v1/organization/register_member, roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
