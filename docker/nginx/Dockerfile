@@ -20,6 +20,7 @@ ARG ACCESS_CONTROL_ALLOW_ORIGIN
 ENV ACCESS_CONTROL_ALLOW_ORIGIN=$ACCESS_CONTROL_ALLOW_ORIGIN
 RUN envsubst '${ACCESS_CONTROL_ALLOW_ORIGIN}' < ./docker/nginx/default.conf.template > ./docker/nginx/default.conf
 RUN dos2unix ./docker/nginx/default.conf
+RUN dos2unix ./docker/nginx/start.sh
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Stage 2: Production
