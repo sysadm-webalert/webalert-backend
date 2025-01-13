@@ -24,6 +24,7 @@ class AlertsRepository extends ServiceEntityRepository
             ->andWhere('w.client = :client')
             ->setParameter('client', $client)
             ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }
