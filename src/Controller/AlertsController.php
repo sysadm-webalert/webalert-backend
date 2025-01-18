@@ -97,7 +97,13 @@ class AlertsController extends AbstractController
 
     private function alertsAgroupation(array $alerts): array
     {
+        usort($alerts, function($a, $b) {
+            return $a->getCreatedAt() <=> $b->getCreatedAt();
+        });
+
         $groupedAlerts = [];
+        $currentGroup = null;
+        $lastResolvedAt = null;
 
         foreach ($alerts as $alert) {
             $websiteId = $alert->getWebsite()->getId();
@@ -108,49 +114,21 @@ class AlertsController extends AbstractController
                 $groupedAlerts[$groupKey] = [];
             }
 
-            $currentIntervals = &$groupedAlerts[$groupKey];
-            $lastInterval = end($currentIntervals);
-
-            if ($lastInterval === false || ($lastInterval['last']->getResolvedAt() && $alert->getCreatedAt() > $lastInterval['last']->getResolvedAt())) {
-                $currentIntervals[] = [
+            if ($lastResolvedAt === null || $alert->getCreatedAt() > $lastResolvedAt) {
+                $groupedAlerts[$groupKey][] = [
                     'first' => $alert,
-                    'last' => $alert,
+                    'last' => $alert
                 ];
+                $currentGroup = &$groupedAlerts[$groupKey][count($groupedAlerts[$groupKey]) - 1];
             } else {
-                $lastInterval['last'] = $alert;
-                $currentIntervals[key($currentIntervals)] = $lastInterval;
-            }
-        }
-
-        $flattenedAlerts = [];
-        foreach ($groupedAlerts as $intervals) {
-            foreach ($intervals as $interval) {
-                $flattenedAlerts[] = $interval;
-            }
-        }
-
-        usort($flattenedAlerts, function ($a, $b) {
-            return $b['last']->getCreatedAt() <=> $a['last']->getCreatedAt();
-        });
-
-        $flattenedAlerts = array_slice($flattenedAlerts, 0, 100);
-
-        $limitedGroupedAlerts = [];
-        foreach ($flattenedAlerts as $interval) {
-            $websiteId = $interval['first']->getWebsite()->getId();
-            $kind = $interval['first']->getKind();
-            $groupKey = "{$websiteId}-{$kind}";
-
-            if (!isset($limitedGroupedAlerts[$groupKey])) {
-                $limitedGroupedAlerts[$groupKey] = [];
+                $currentGroup['last'] = $alert;
             }
 
-            $limitedGroupedAlerts[$groupKey][] = $interval;
+            $lastResolvedAt = $alert->getResolvedAt();
         }
 
-        return $limitedGroupedAlerts;
+        return $groupedAlerts;
     }
-
 
     private function alertsFormat(array $groupedAlerts, ?string $userTimezone): array
     {
