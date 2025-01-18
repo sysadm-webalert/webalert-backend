@@ -133,15 +133,17 @@ class AlertsController extends AbstractController
     private function alertsFormat(array $groupedAlerts, ?string $userTimezone): array
     {
         $alertData = [];
-
         foreach ($groupedAlerts as $intervals) {
             foreach ($intervals as $interval) {
                 $firstAlert = $interval['first'];
                 $lastAlert = $interval['last'];
-
                 $alertData[] = $this->alertFormat($firstAlert, $lastAlert, $userTimezone);
             }
         }
+
+        usort($alertData, function($a, $b) {
+            return strtotime($b['createdAt']) <=> strtotime($a['createdAt']);
+        });
 
         return $alertData;
     }
