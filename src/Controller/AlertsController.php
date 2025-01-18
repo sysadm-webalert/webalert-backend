@@ -122,8 +122,35 @@ class AlertsController extends AbstractController
             }
         }
 
-        return $groupedAlerts;
+        $flattenedAlerts = [];
+        foreach ($groupedAlerts as $intervals) {
+            foreach ($intervals as $interval) {
+                $flattenedAlerts[] = $interval;
+            }
+        }
+
+        usort($flattenedAlerts, function ($a, $b) {
+            return $b['last']->getCreatedAt() <=> $a['last']->getCreatedAt();
+        });
+
+        $flattenedAlerts = array_slice($flattenedAlerts, 0, 100);
+
+        $limitedGroupedAlerts = [];
+        foreach ($flattenedAlerts as $interval) {
+            $websiteId = $interval['first']->getWebsite()->getId();
+            $kind = $interval['first']->getKind();
+            $groupKey = "{$websiteId}-{$kind}";
+
+            if (!isset($limitedGroupedAlerts[$groupKey])) {
+                $limitedGroupedAlerts[$groupKey] = [];
+            }
+
+            $limitedGroupedAlerts[$groupKey][] = $interval;
+        }
+
+        return $limitedGroupedAlerts;
     }
+
 
     private function alertsFormat(array $groupedAlerts, ?string $userTimezone): array
     {
