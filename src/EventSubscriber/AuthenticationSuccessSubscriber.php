@@ -43,6 +43,7 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
 
             $data['name'] = $user->getName();
             $data['email'] = $user->getEmail();
+            $data['timezone'] = $user->getTimezone();
 
             $event->setResponse(new JsonResponse($data));
         }
