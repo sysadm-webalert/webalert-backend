@@ -69,7 +69,7 @@ class CreateSystemUserCommand extends Command
 
     private function generateRandomPassword(int $length = 24): string
     {
-        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $charactersLength = strlen($characters);
         $randomPassword = '';
 
