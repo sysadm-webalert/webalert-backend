@@ -68,5 +68,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Support
 For issues or feature requests, please open an issue in the [GitHub repository](https://github.com/sysadm-webalert/webalert-backend/issues).
 
+## UOC Publication
+https://openaccess.uoc.edu/items/874f1c25-c9df-480a-a9f4-8f387df60f09
 ---
 **WebAlert Agent** © 2024
